@@ -19,7 +19,7 @@ namespace BoardAndBarber.Controllers
         {
             _repo = new CustomerRepository();
         }
-        [HttpPost]
+        [HttpPost]  
         public IActionResult CreateCustomer(Customer customer)
         {
             //var repo = new CustomerRepository(); //if we declare and instantiate the repo up top, then we don't have to call it every time.
@@ -43,6 +43,7 @@ namespace BoardAndBarber.Controllers
         public IActionResult UpdateCustomer(int id, Customer customer)
         {
             //var repo = new CustomerRepository();
+            
             var updatedCustomer = _repo.Update(id, customer);
 
             return Ok(updatedCustomer);
