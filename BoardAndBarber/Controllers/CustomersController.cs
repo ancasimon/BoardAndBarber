@@ -59,5 +59,13 @@ namespace BoardAndBarber.Controllers
             _repo.Remove(id);
             return Ok();
         }
+
+        [HttpGet("{id}")]
+        public IActionResult GetCustomerById(int id)
+        {
+            var customer = _repo.GetById(id);
+            if (customer == null) return NotFound("No customer with that ID was found.");
+            return Ok(customer);
+        }
     }
 }
