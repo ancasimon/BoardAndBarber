@@ -42,6 +42,13 @@ namespace BoardAndBarber
 
             app.UseAuthorization();
 
+            // Anca: this is how we configure our application to accept - or not accept - CORS requests - in general, our application will NOT accept them!
+            // You have to allow some because the front end runs on a different origin (usually localhost:8080) 
+            // but since we don't know that the front end will always run only on that origin, we need to do this:
+            // we will take in the policy object that ASP.Net will use to determine if a CORS request will be allowed or not:
+            // This is where you can control - maybe you want to allow only get methods instead of saying Any ...
+            app.UseCors(policy => policy.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
