@@ -7,16 +7,18 @@ class Customers extends React.Component {
     state = { customers: [] };
 
     componentDidMount() {
-        customerData.getAllCustomers
+        customerData.getAllCustomers()
             .then(customers => {this.setState({customers})});
     }
 
     render() {
         const {customers} = this.state;
 
-        const buildCustomerList = customers.map((customer) => {(
+        const buildCustomerList = customers.map((customer) => {
+            return (
             <SingleCustomer key={customer.id} customer={customer} />   
-        )});
+            )
+        });
 
         return (
             <div>
