@@ -1,27 +1,13 @@
+import axios from 'axios';
+import {baseUrl} from './constants.json';
+
 const getAllCustomers = () => new Promise((resolve, reject) => {
-    resolve([
-        {
-            id:1,
-            name:"nathan",
-            birthday:"5/27/1986", 
-            favoriteBarber:"Jimbo", 
-            notes:"fancy"
-        },
-        {
-            id:2,
-            name:"Billy",
-            birthday:"5/27/1986", 
-            favoriteBarber:"Jimbo", 
-            notes:"fancy"
-        },
-        {
-            id:3,
-            name:"Tommy",
-            birthday:"5/27/1986", 
-            favoriteBarber:"Jimbo", 
-            notes:"fancy"
-        }
-    ])
-} );
+    axios.get(`${baseUrl}/Customers`)
+    .then(response => {
+        let customers = response.data;
+        resolve(customers);
+    })
+    .catch((error) => reject(error));
+});
 
 export default {getAllCustomers};

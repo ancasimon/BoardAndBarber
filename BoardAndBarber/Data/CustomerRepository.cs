@@ -60,9 +60,9 @@ namespace BoardAndBarber.Data
 
             //once we update the code to allow the database to create the ID - we can grab it from the copy of the table we get via the Output inserted.customerId above!
             //since in SQL the id is the first column > we can use the ExecuteScalar method.
-            var newId = (int) cmd.ExecuteScalar();
+            //var newId = (int) cmd.ExecuteScalar();
 
-            customerToAdd.Id = newId;
+            //customerToAdd.Id = newId;
 
             //if (rows != 1)
             //{
