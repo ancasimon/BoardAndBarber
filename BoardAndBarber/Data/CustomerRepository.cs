@@ -5,14 +5,24 @@ using System.Threading.Tasks;
 using BoardAndBarber.Models;
 using Microsoft.Data.SqlClient;
 using Dapper;
+using Microsoft.Extensions.Configuration;
 
 namespace BoardAndBarber.Data
 {
     public class CustomerRepository
     {
-        static List<Customer> _customers = new List<Customer>();
+        // static List<Customer> _customers = new List<Customer>();
 
-        const string _connectionString = "Server=localhost;Database=BoardAndBarber;Trusted_Connection=True;";
+        // ADDED the 2 code blocks below to support the updated configuration!!!
+
+        readonly string _connectionString;
+        public CustomerRepository(IConfiguration configuration)
+        {
+            _connectionString = configuration.GetConnectionString("BoardAndBarber");
+        }
+
+        // Prior to the chaneg above, we were defining the connectionString this way:
+        // const string _connectionString = "Server=localhost;Database=BoardAndBarber;Trusted_Connection=True;";
 
         public void Add(Customer customerToAdd)
         {
@@ -78,13 +88,13 @@ namespace BoardAndBarber.Data
             //    //get the next ID by finding the max current id: NOTE: You will get an error if there are no current records - because it needs at least one thing to figure out what the max is - so you can define a defaul value first and then use that if there are no current records:
             //    newId = _customers.Select(p => p.Id).Max() + 1;
             //}
-            //customerToAdd.Id = newId;
+            customerToAdd.Id = newId;
             //_customers.Add(customerToAdd);
         }
 
         //this was used for regular db access: public List<Customer> GetAll() //this method will return a list of all the customers
         //next one for Dapper accesss:
-        public IEnumerable<Customer> GetAll() //this method will return a list of all the customers
+        public List<Customer> GetAll() //this method will return a list of all the customers
 
         {
 
@@ -113,11 +123,25 @@ namespace BoardAndBarber.Data
 
             //DAPPER VERSION BELOW - don't need to open and close connections with Dapper:
             using var db = new SqlConnection(_connectionString); //we name it db!!
+
+            // USING a try-ctach statement:
+            try
+            {
+                
+                var customersList = db.Query<Customer>("select * from Customer");
+                return customersList.ToList();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+            // older version of the same thing from above - before the try catch statement added above:
             var sql = "select * from Customer";
 
-            var customers = db.Query<Customer>(sql); //you could also pass in the sql query directly in the parentehrse s- between ""
+           //  var customers = db.Query<Customer>(sql); //you could also pass in the sql query directly in the parentehrse s- between ""
 
-            return customers; //note: you need to also change the type of the return to be IENUMERABLE!! Dapper returns IEnumerable type!
+            // return customers; //note: you need to also change the type of the return to be IENUMERABLE!! Dapper returns IEnumerable type!
             //return customers.ToList(); 
 
             //return _customers;

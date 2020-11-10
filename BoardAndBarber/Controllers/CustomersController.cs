@@ -15,9 +15,10 @@ namespace BoardAndBarber.Controllers
     {
         CustomerRepository _repo; //since we are calling this in every method, we can declare it and instantiate it once!
 
-        public CustomersController()
+        // Anca: Added the constructor here  BECAUSE????
+        public CustomersController(CustomerRepository repo)
         {
-            _repo = new CustomerRepository();
+            _repo = repo;
         }
         [HttpPost]  
         public IActionResult CreateCustomer(Customer customer)
